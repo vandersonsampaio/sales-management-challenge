@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id "org.springframework.boot" version "2.1.7.RELEASE"
+}
+
+group 'com.stefanini.challenge'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repository.primefaces.org/'
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.primefaces:primefaces:8.0'
+    implementation 'org.primefaces.themes:all-themes:1.0.10'
+    implementation 'org.primefaces.themes:bootstrap:1.0.10'
+
+    implementation 'com.sun.faces:jsf-api:2.2.20'
+    implementation 'com.sun.faces:jsf-impl:2.2.20'
+    implementation 'org.joinfaces:joinfaces-dependencies:3.3.0-rc2'
+
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.h2database:h2'
+    implementation 'org.postgresql:postgresql'
+
+
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}

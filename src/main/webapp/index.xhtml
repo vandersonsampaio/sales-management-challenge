@@ -1,0 +1,160 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+<h:head>
+    <title>Sales Management</title>
+
+    <h:outputStylesheet>
+        td.intTypeColumnContent{
+            text-align: right;
+        }
+
+        td.centerColumnContent{
+            text-align: center;
+        }
+    </h:outputStylesheet>
+
+</h:head>
+<h:body>
+    <div class="ui-row-editor">
+        <div class="ui-lg-12" align="center">
+        <h1>Sales Management Challenge</h1>
+        </div>
+        <div class="ui-lg-4">
+            <p:linkButton outcome="new-order" value="New Order" style="margin-right:20px;"/>
+        </div>
+    </div>
+
+    <p:outputPanel>
+        <h:form id="form">
+            <p:growl id="growl" sticky="true" />
+            <p:dataTable var="client" value="#{managementController.clients}" rows="5"
+                 paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10" size="small" styleClass="clientGrid">
+                <f:facet name="header">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                        List of Clients
+                    </div>
+                </f:facet>
+
+                <p:column headerText="Identifier" styleClass="centerColumnContent" style="width: 10%">
+                    <h:outputText value="#{client.identifier}"/>
+                </p:column>
+
+                <p:column headerText="Full Name" style="width: 60%">
+                    <h:outputText value="#{client.name}"/>
+                </p:column>
+
+                <p:column headerText="Email"  style="width: 30%">
+                    <h:outputText value="#{client.email}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+
+            <div class="card">
+                <p:dataTable var="product" value="#{managementController.products}" rows="5"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10" size="small">
+                    <f:facet name="header">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            List of Products
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="SKU" styleClass="centerColumnContent"  style="width: 20%">
+                        <h:outputText value="#{product.sku}"/>
+                    </p:column>
+
+                    <p:column headerText="Name"  style="width: 50%">
+                        <h:outputText value="#{product.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Quantity" styleClass="intTypeColumnContent"  style="width: 15%">
+                        <h:outputText value="#{product.quantity}"/>
+                    </p:column>
+
+                    <p:column headerText="Price"  style="width: 15%">
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <br/>
+            <div class="card">
+                <p:dataTable value="#{managementController.orders}" var="order">
+                    <f:facet name="header">
+                        List of Orders
+                    </f:facet>
+                    <p:column headerText="Client Identifier" styleClass="centerColumnContent"  style="width: 18%">
+                        <h:outputText value="#{order.client.identifier}"/>
+                    </p:column>
+                    <p:column headerText="Client Name" style="width: 50%">
+                        <h:outputText value="#{order.client.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Date" styleClass="centerColumnContent" style="width: 13%">
+                        <h:outputText value="#{order.date}">
+                            <f:convertDateTime type="date" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Total" style="width: 13%">
+                        <h:outputText value="#{order.amount}">
+                            <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Detail" styleClass="centerColumnContent" style="width: 6%">
+                        <p:commandButton update=":form:documentPanel" oncomplete="PF('documentDialog').show()"
+                                         title="View Detail" icon="pi pi-search">
+                            <f:setPropertyActionListener value="#{order}" target="#{managementController.selectedOrder}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog id="dialog" header="List of Items" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false" width="70%">
+                    <p:outputPanel id="documentPanel">
+                        <h:panelGrid columns="2" cellpadding="7" rendered="#{not empty managementController.selectedOrder}">
+                            <p:dataTable var="orderDetail" value="#{managementController.selectedOrder.items}" rows="5"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                         rowsPerPageTemplate="5,10" size="small" >
+
+                                <p:column headerText="Product Name" style="width: 60%">
+                                    <h:outputText value="#{orderDetail.product.name}"/>
+                                </p:column>
+
+                                <p:column headerText="Unit Price" style="width: 15%">
+                                    <h:outputText value="#{orderDetail.unitPrice}">
+                                        <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Quantity" styleClass="intTypeColumnContent" style="width: 10%">
+                                    <h:outputText value="#{orderDetail.quantity}"/>
+                                </p:column>
+
+                                <p:column headerText="Total"  style="width: 15%">
+                                    <h:outputText value="#{orderDetail.amount}">
+                                        <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </div>
+        </h:form>
+    </p:outputPanel>
+</h:body>
+</f:view>
+</html>
