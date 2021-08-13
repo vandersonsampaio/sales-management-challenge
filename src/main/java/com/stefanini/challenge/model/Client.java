@@ -34,7 +34,7 @@ public class Client {
 
     @Override
     public String toString() {
-        return identifier +
+        return identifier.trim() +
                 " | " + name +
                 " | " + email;
     }

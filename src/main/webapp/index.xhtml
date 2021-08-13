@@ -19,6 +19,7 @@
 </h:head>
 <h:body>
     <div class="ui-row-editor">
+        <p:messages/>
         <div class="ui-lg-12" align="center">
         <h1>Sales Management Challenge</h1>
         </div>
@@ -34,7 +35,7 @@
                  paginator="true"
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                 rowsPerPageTemplate="5,10" size="small" styleClass="clientGrid">
+                 rowsPerPageTemplate="5,10" size="small">
                 <f:facet name="header">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         List of Clients
@@ -89,7 +90,10 @@
 
             <br/>
             <div class="card">
-                <p:dataTable value="#{managementController.orders}" var="order">
+                <p:dataTable value="#{managementController.orders}" var="order" rows="5" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10" size="small">
                     <f:facet name="header">
                         List of Orders
                     </f:facet>
@@ -114,7 +118,7 @@
 
                     <p:column headerText="Detail" styleClass="centerColumnContent" style="width: 6%">
                         <p:commandButton update=":form:documentPanel" oncomplete="PF('documentDialog').show()"
-                                         title="View Detail" icon="pi pi-search">
+                                         title="View Detail" icon="ui-icon-search">
                             <f:setPropertyActionListener value="#{order}" target="#{managementController.selectedOrder}"/>
                         </p:commandButton>
                     </p:column>

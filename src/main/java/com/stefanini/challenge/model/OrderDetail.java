@@ -15,6 +15,7 @@ public class OrderDetail {
 
     @Id
     @Column(name = "id_order_detail", nullable = false)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int idOrderDetail;
 
     @Column(name = "nr_quantity", nullable = false)

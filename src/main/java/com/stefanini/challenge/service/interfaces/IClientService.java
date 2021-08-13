@@ -7,4 +7,5 @@ import java.util.List;
 public interface IClientService {
 
     List<Client> findAllClients();
+    Client getById(String id);
 }

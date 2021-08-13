@@ -9,4 +9,10 @@
         </el-resolver>
     </application>
 
+    <converter>
+        <description>Product Converter Config</description>
+        <converter-id>productConverter</converter-id>
+        <converter-class>com.stefanini.challenge.controller.converter.ProductConverter</converter-class>
+    </converter>
+
 </faces-config>

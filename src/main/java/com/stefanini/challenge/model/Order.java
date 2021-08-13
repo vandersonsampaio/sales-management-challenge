@@ -17,6 +17,7 @@ public class Order {
 
     @Id
     @Column(name = "id_order", nullable = false)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int idOrder;
 
     @Column(name = "dt_order", nullable = false)

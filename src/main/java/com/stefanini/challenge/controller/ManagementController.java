@@ -10,21 +10,19 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 import java.io.Serializable;
 import java.util.List;
 
 @Component
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class ManagementController implements Serializable {
 
     private final IClientService clientService;
     private final IProductService productService;
     private final IOrderService orderService;
     private List<Client> clients;
-    private List<Product> products;
-    private List<Order> orders;
     private Order selectedOrder;
 
     public ManagementController(IClientService clientService,
@@ -38,8 +36,6 @@ public class ManagementController implements Serializable {
     @PostConstruct
     public void init() {
         clients = clientService.findAllClients();
-        products = productService.findAllProducts();
-        orders = orderService.findAllOrders();
     }
 
     public List<Client> getClients(){
@@ -47,7 +43,7 @@ public class ManagementController implements Serializable {
     }
 
     public List<Product> getProducts(){
-        return products;
+        return productService.findAllProducts();
     }
 
     public Order getSelectedOrder(){
@@ -55,7 +51,7 @@ public class ManagementController implements Serializable {
     }
 
     public List<Order> getOrders(){
-        return orders;
+        return orderService.findAllOrders();
     }
 
     public void setSelectedOrder(Order order){

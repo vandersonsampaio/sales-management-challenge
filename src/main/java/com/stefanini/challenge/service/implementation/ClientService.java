@@ -19,4 +19,8 @@ public class ClientService implements IClientService {
     public List<Client> findAllClients(){
         return repository.findAll();
     }
+
+    public Client getById(String id) {
+        return repository.findById(id).orElse(null);
+    }
 }

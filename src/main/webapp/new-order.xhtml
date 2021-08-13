@@ -9,20 +9,95 @@
     </h:head>
     <h:body>
         <div class="card ui-fluid ">
-            <h:form>
-                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+            <p:messages />
+            <h:form id="new-order">
+                <p:panel id="main-panel" header="New Order">
+                    <h:panelGrid columns="2" cellpadding="8">
+                        <p:outputLabel value="Client" for="@next" />
+                        <p:autoComplete id="client" minQueryLength="3" forceSelection="true"
+                                        value="#{newOrderController.selectedClient}"
+                                        var="client" itemLabel="#{client}" itemValue="#{client}"
+                                        converter="#{clientConverter}"
+                                        completeMethod="#{newOrderController.completeClientInformation}" effect="fade" scrollHeight="250"/>
+                    </h:panelGrid>
 
-                <h5 class="p-mt-0">New Order</h5>
-                <div class="p-formgrid p-grid">
+                    <h:panelGrid columns="4" cellpadding="8" id="detailPanel">
+                        <p:outputLabel value="Product" for="@next" />
+                        <p:autoComplete id="product" minQueryLength="3" forceSelection="true"
+                                        value="#{newOrderController.selectedProduct}"
+                                        converter="#{productConverter}"
+                                        completeMethod="#{newOrderController.completeProductInformation}" effect="fade" scrollHeight="250">
+                            <p:ajax event="itemSelect" update="product" />
+                            <p:ajax event="itemSelect" update="unit-price" />
+                            <p:ajax event="itemSelect" update="total" />
+                        </p:autoComplete>
 
-                    <div class="p-field p-col-12 p-md-4">
-                        <p:outputLabel value="Cliente" for="@next"/>
-                        <p:autoComplete id="acMinLength" minQueryLength="3" forceSelection="true"
-                                        value="#{newOrderController.client}"
-                                        completeMethod="#{newOrderController.completeText}" effect="fade" scrollHeight="250"/>
-                    </div>
-                </div>
-        </h:form>
+                        <p:outputLabel value="Unit Price" for="@next" />
+                        <p:inputText id="unit-price"  value="#{newOrderController.selectedProduct.price}" readonly="true"/>
+
+                        <p:outputLabel value="Quantity" for="@next" />
+                        <p:inputText id="quantity" value="#{newOrderController.quantity}" >
+                            <p:ajax event="change" update="total" />
+                        </p:inputText>
+
+                        <p:outputLabel value="Total" for="@next" />
+                        <p:inputText id="total" value="#{newOrderController.amount}" readonly="true"/>
+
+
+                        <p:commandButton id="add-item" icon="ui-icon-plus" title="Add Item" action="#{newOrderController.addItem}"
+                                         update="@form:new-order:items-lists"/>
+                    </h:panelGrid>
+
+                    <p:dataTable id="items-lists" value="#{newOrderController.items}" var="item">
+                        <f:facet name="header">
+                            List of Items
+                        </f:facet>
+                        <p:column headerText="Product" >
+                            <h:outputText value="#{item.product.name}"/>
+                        </p:column>
+                        <p:column headerText="Unit Price" >
+                            <h:outputText value="#{item.unitPrice}">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Quantity" styleClass="centerColumnContent" >
+                            <h:outputText value="#{item.quantity}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Total" >
+                            <h:outputText value="#{item.amount}">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Remove" styleClass="centerColumnContent" style="width: 6%">
+                            <p:commandButton action="#{newOrderController.removeItem(item)}"
+                                             update="@form:new-order:items-lists"
+                                             title="Remove Item" icon="ui-icon-minus">
+                            </p:commandButton>
+                        </p:column>
+
+                        <f:facet name="footer">
+                                <h:outputText value="Total: "/>
+                                <h:outputText value="#{newOrderController.amountOrder}">
+                                    <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+                                </h:outputText>
+                        </f:facet>
+                    </p:dataTable>
+
+                    <br/>
+                    <p:commandButton id="submit" icon="ui-icon-disk" value="Save" style="width: 10%"
+                                     action="#{newOrderController.saveOrder}">
+                        <p:resetInput target="main-panel"/>
+                    </p:commandButton>
+                    <p:commandButton id="return" icon="ui-icon-angle-left" value="Return" style="width: 10%"
+                                     action="#{newOrderController.returnPage}">
+                        <p:resetInput target="main-panel"/>
+                    </p:commandButton>
+                </p:panel>
+            </h:form>
         </div>
     </h:body>
 </f:view>

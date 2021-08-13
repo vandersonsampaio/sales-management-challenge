@@ -19,4 +19,8 @@ public class ProductService implements IProductService {
     public List<Product> findAllProducts(){
         return repository.findAll();
     }
+
+    public Product getByName(String name){
+        return repository.findAllByName(name).stream().findAny().orElse(null);
+    }
 }
