@@ -8,6 +8,7 @@ group 'com.stefanini.challenge'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'jacoco'
+apply plugin: 'war'
 
 repositories {
     mavenCentral()
@@ -18,8 +19,8 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     implementation 'org.primefaces:primefaces:8.0'
     implementation 'org.primefaces.themes:all-themes:1.0.10'
@@ -36,6 +37,7 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.postgresql:postgresql'
 
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     testImplementation 'junit:junit:4.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
